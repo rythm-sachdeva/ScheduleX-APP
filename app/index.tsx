@@ -1,9 +1,18 @@
-import React from 'react'
-import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const index = () => {
+  const router = useRouter();
+  const onGetStarted = (e:any)=>{
+    router.push('/signup')
+  }
+  const onSignIn = ()=>{
+    router.push('/signin')
+  }
+
   return (
     <SafeAreaView className='flex-1 bg-slate-900 '>
       <StatusBar barStyle='light-content'/>
@@ -27,14 +36,14 @@ const index = () => {
        </View>
        {/* Buttons and Clickable content */}
        <View className='mb-3'>
-        <TouchableOpacity className='bg-blue-400 py-4 mb-4 rounded-full'>
+        <TouchableOpacity onPress={onGetStarted} className='bg-blue-400 py-4 mb-4 rounded-full'>
           <Text className='text-white text-lg font-bold text-center'>
             Get Started
 
           </Text>
 
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onSignIn}>
             <Text className="text-gray-400 text-md text-center">
               Sign In
             </Text>

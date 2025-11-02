@@ -4,9 +4,10 @@ import { IAuthContext } from './entity/auth.entity';
 
 export const AuthContext = createContext<IAuthContext| null>(null)
 
-export const useAuth = () => {
+export const useAuth = ():IAuthContext => {
  const context = useContext(AuthContext);
  if(!context){
     throw new ScheduleError("Use Auth must be within auth provider","USEAUTH");
  }
+ return context;
 }

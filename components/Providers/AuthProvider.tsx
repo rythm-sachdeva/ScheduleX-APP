@@ -3,18 +3,20 @@ import { ISigninResponse, ISignUpRequest, ISignUpResponse } from '@/context/enti
 import { useConfig } from '@/context/UrlsContext';
 import { ScheduleError } from '@/global/Error/error';
 import { deleteToken, getToken, setToken } from '@/utils/token';
+import axios from 'axios';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-
-
-
+import Toast from 'react-native-toast-message';
 
 
 
 const AuthProvider = ({children}:{children:React.ReactNode}) => {
     const [session,setSession] = useState<string | null>(null);
     const [isLoading,setLoading] = useState<boolean>(false);
+    const router = useRouter();
+     const config = useConfig();
 const signIn = async (email:string,password:string) : Promise<void>=>{
-  const config = useConfig();
+ 
   const data = {email,password};
     try {
       setLoading(true)
@@ -24,6 +26,7 @@ const signIn = async (email:string,password:string) : Promise<void>=>{
       throw new ScheduleError("Error While Signing In","signIn")
     }finally{
       setLoading(false)
+      router.navigate('/(auth)/home')
     }
 }
 const signOut = async () : Promise<void> =>{
@@ -38,16 +41,35 @@ const signOut = async () : Promise<void> =>{
    }
 }
 const signUp = async(data:ISignUpRequest) : Promise<void> =>{
-  const config = useConfig();
    try {
     setLoading(true)
-    const {access,refresh} = (await axios.post<ISignUpResponse>(config.backendUrl + String('api/auth/registration/'),data)).data
-    await setToken(access,refresh)
+
+    const response = (await axios.post<ISignUpResponse>(`${config.backendUrl}api/auth/registration/`,data))
+    if(response.status === 201)
+    {
+      Toast.show({
+        type:'success',
+        text1:'Account created successfully'
+      })
+      const {access,refresh} = response.data
+      await setToken(access,refresh)
+      router.navigate('/(auth)/home')
+    }
+    
    } catch (error) {
+    Toast.show(
+      {
+        type:'error',
+        text1:'SignUp failed',
+        text2: String(error)
+      }
+    )
     throw new ScheduleError("Error While SigningUp","signup")
    }
    finally{
     setLoading(false)
+  
+
    }
 }
 
