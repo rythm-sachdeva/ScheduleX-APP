@@ -1,6 +1,6 @@
 import { ScheduleError } from '@/global/Error/error';
 import { createContext, useContext } from 'react';
-import { IAuthContext } from './entity/context.entity';
+import { IAuthContext } from './entity/auth.entity';
 
 export const AuthContext = createContext<IAuthContext| null>(null)
 

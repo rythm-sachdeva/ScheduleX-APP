@@ -2,8 +2,8 @@ import { AuthContext } from '@/context/AuthContext';
 import { ISigninResponse, ISignUpRequest, ISignUpResponse } from '@/context/entity/auth.entity';
 import { useConfig } from '@/context/UrlsContext';
 import { ScheduleError } from '@/global/Error/error';
-import { deleteToken, setToken } from '@/utils/token';
-import React, { useState } from 'react';
+import { deleteToken, getToken, setToken } from '@/utils/token';
+import React, { useEffect, useState } from 'react';
 
 
 
@@ -50,9 +50,17 @@ const signUp = async(data:ISignUpRequest) : Promise<void> =>{
     setLoading(false)
    }
 }
+
+useEffect(()=>{
+  getToken().then((token)=>{
+    if(token)
+      setSession(token)
+  })
+},[])
+
     
   return (
-    <AuthContext.Provider value={{signIn,signOut,signup,session,isLoading}}>
+    <AuthContext.Provider value={{signIn,signOut,signUp,session,isLoading}}>
      {children}
     </AuthContext.Provider>
   )

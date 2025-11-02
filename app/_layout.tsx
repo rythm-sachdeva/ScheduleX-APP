@@ -8,6 +8,7 @@ export default function RootLayout() {
   <UrlProvider> 
     <AuthProvider>
     <Stack >
+      <Stack.Screen name="index" options={{headerShown:false}}/>ß
     <Stack.Screen name="(app)" options={{ headerShown: false }} />
     <Stack.Screen name="(auth)" options={{headerShown:false}}/>
     </Stack>
