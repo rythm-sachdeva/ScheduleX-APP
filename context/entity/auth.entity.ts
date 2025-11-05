@@ -14,6 +14,11 @@ export interface ISignUpRequest{
     last_name?:string;
 }
 
+export interface ISignInRequest{
+    email:string;
+    password:string;
+}
+
 
 export interface IUserResponse{
     pk:number;

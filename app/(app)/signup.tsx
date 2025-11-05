@@ -1,6 +1,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { ISignUpRequest } from "@/context/entity/auth.entity";
 import { EyeIcon, EyeSlashIcon } from "@/global/Icons/EyeIcon";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -18,6 +19,7 @@ export default function SignUp() {
    const [showPassword , setShowPassword] = useState<boolean>(false)
    const [confirmPassword,setConfirmPassword] = useState<boolean>(false)
    const {signUp} = useAuth();
+   const router = useRouter();
    
    
    
@@ -152,7 +154,7 @@ export default function SignUp() {
           {/* Already have an account? */}
           <View className="flex-row justify-center mb-8">
             <Text className="text-gray-300 text-base">Already have an account? </Text>
-            <TouchableOpacity onPress={() => console.log('Sign In Pressed!')}>
+            <TouchableOpacity onPress={() => router.navigate('/(app)/signin')}>
               <Text className="text-blue-400 text-base font-semibold">Sign In</Text>
             </TouchableOpacity>
           </View>

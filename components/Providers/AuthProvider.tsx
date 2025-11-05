@@ -20,13 +20,32 @@ const signIn = async (email:string,password:string) : Promise<void>=>{
   const data = {email,password};
     try {
       setLoading(true)
-      const {access,refresh} = (await axios.post<ISigninResponse>(config.backendUrl + String('api/auth/login/'),data)).data
+      const response = (await axios.post<ISigninResponse>(config.backendUrl + String('api/auth/login/'),data))
+      if(response.status === 200)
+      {
+        Toast.show({
+          type:'success',
+          text1: "Signed in Successfully"
+        })
+        const {access,refresh} = response.data
+
       await setToken(access,refresh)
+      router.navigate('/(auth)/home')
+      }
+    
+      
     } catch (error) {
+      Toast.show(
+      {
+        type:'error',
+        text1:'SignUp failed',
+        text2: String(error)
+      }
+    )
       throw new ScheduleError("Error While Signing In","signIn")
+
     }finally{
       setLoading(false)
-      router.navigate('/(auth)/home')
     }
 }
 const signOut = async () : Promise<void> =>{
