@@ -11,12 +11,12 @@ export function useProtectedRoute(session:string | null){
   useEffect(()=>{
  if(!session && !isAuthGroup)
  {
-    router.replace('/login')
+    router.navigate('/(app)/signin')
  }
   
- if(!session && !isAuthGroup)
+ if(session && !isAuthGroup)
  {
-    router.replace('/dashboard')
+    router.replace('/(auth)/home')
  }
 
 
