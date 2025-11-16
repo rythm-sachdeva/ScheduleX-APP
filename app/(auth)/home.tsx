@@ -1,6 +1,7 @@
 import { useAuth } from '@/context/AuthContext'
 import { useConfig } from '@/context/UrlsContext'
 import { djangoUrls } from '@/global/Endpoints/django-endpoints'
+import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -12,9 +13,11 @@ const home = () => {
    const config = useConfig()
 
   useEffect(()=>{
-   axios.get(config.backendUrl + String(djangoUrls.connectedAccounts),{headers:{
+   axios.get<any>(config.backendUrl + String(djangoUrls.connectedAccounts),{headers:{
     Authorization: `Bearer ${session}`
-   }})
+   }}).then((val)=>{
+    setConnectedAccounts(val.data)
+   })
   },[])
 
   return (
