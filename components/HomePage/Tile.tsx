@@ -1,14 +1,71 @@
 import { AccountInfo } from '@/global/constants/allowedAccounts';
+import { LinkedinConfig } from '@/global/constants/linkedin.config';
+import { useLinkedInStore } from '@/store/linkedInStore';
+import { useUrlStore } from '@/store/urlStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import React from 'react';
+import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
+
+WebBrowser.maybeCompleteAuthSession();
+
+const DISCOVERY = {
+  authorizationEndpoint: LinkedinConfig.serviceConfiguration.authorizationEndpoint,
+  tokenEndpoint: LinkedinConfig.serviceConfiguration.tokenEndpoint,
+};
+
+const ClientId = LinkedinConfig.clientId;
+const BackendUri = useUrlStore((state) => state.backendUrl) + '/linkedin/connect';
 
 const Tile = ({icon,socialAccount}:AccountInfo) => {
+  const {exchangeCodeForToken} = useLinkedInStore()
+
+  const redirectUri = makeRedirectUri({
+    scheme: 'socialschedulerapp', 
+    path: 'redirect'
+  });
+  console.log('Redirect URI:', redirectUri);
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: ClientId,
+      scopes: ['openid', 'profile', 'email', 'w_member_social'],
+      redirectUri,
+      responseType: ResponseType.Code,
+    },
+    DISCOVERY
+  );
+   useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params;
+      console.log('Auth Code received:', code);
+      exchangeCodeForToken(code);
+    } else if (response?.type === 'error') {
+      Toast.show({
+        type: 'error',
+        text1: 'Authentication Error',
+        text2: 'Failed to authenticate with LinkedIn.',
+      })
+    }
+  }, [response]);
+
   return (
     <View style={styles.container} >
       <FontAwesome name={icon} size={40} color={"white"}/>
       <Text style={styles.text}>Connect Your {socialAccount}</Text>
-      <TouchableOpacity className='flex-row  flex justify-center items-center ' style={styles.button} >
+      <TouchableOpacity onPress={()=> {
+        if (socialAccount.toLocaleLowerCase() === 'linkedin') {
+          promptAsync();
+        }
+        else{
+          Toast.show({
+            type: 'info',
+            text1: 'Info',
+            text2: `Connection for ${socialAccount} is not implemented yet.`,
+          })
+        }
+      }}  className='flex-row  flex justify-center items-center ' style={styles.button} >
           <Text style={styles.text2} className=' font-semibold'>
             Connect
         </Text>

@@ -1,6 +1,6 @@
-import { useAuth } from '@/context/AuthContext'
 import { ISignInRequest } from '@/context/entity/auth.entity'
 import { EyeIcon, EyeSlashIcon } from '@/global/Icons/EyeIcon'
+import { useAuthStore } from '@/store/authStore'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -10,7 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const profile = () => {
   const [formData,setFormData] = useState<ISignInRequest>({email:"",password:""});
 const [showPassword , setShowPassword] = useState<boolean>(false)
-const {signIn} = useAuth();
+const {signIn} = useAuthStore();
 const router = useRouter();
 
   return (

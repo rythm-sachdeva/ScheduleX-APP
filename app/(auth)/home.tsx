@@ -1,29 +1,30 @@
 import Tile from '@/components/HomePage/Tile'
-import { useAuth } from '@/context/AuthContext'
-import { useConfig } from '@/context/UrlsContext'
 import { AccountInfo, AllowedAccounts } from '@/global/constants/allowedAccounts'
+import { djangoUrls } from '@/global/Endpoints/django-endpoints'
+import { useAuthStore } from '@/store/authStore'
+import { useConfig } from '@/store/urlStore'
 import { getToken } from '@/utils/token'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
 const home = () => {
-   const {session} = useAuth();
-   const [connectedAccounts,setConnectedAccounts] = useState();
-   const config = useConfig()
-   const token = getToken()
+   const {session} = useAuthStore();
+   const [connectedAccounts,setConnectedAccounts] = useState<any>(null);
+   const config = useConfig();
    
 
-  // useEffect(()=>{
-  //  let token; 
-  //  getToken().then((val)=> token = val)
-  //  axios.get<any>(config.backendUrl + String(djangoUrls.connectedAccounts),{headers:{
-  //   Authorization: `Bearer ${token}`
-  //  }}).then((val)=>{
-  //   setConnectedAccounts(val.data)
-  //  })
-  // },[])
+  useEffect(()=>{
+   let token; 
+   getToken().then((val)=> token = val)
+
+   fetch(config.backendUrl + String(djangoUrls.connectedAccounts),{headers:{
+    Authorization: `Bearer ${session}`
+   }}).then((val)=>{
+      val.json().then((valu)=>  setConnectedAccounts(valu))        
+   })
+  },[])
 
   return (
    <SafeAreaView className='flex-1 flex-col bg-slate-900'>
@@ -43,9 +44,11 @@ const home = () => {
       </TouchableOpacity>
     </View>
     {/* Main Content  */}
+   { 
     <View className='w-full flex-1 gap-10 px-3 pt-6'>
        {AllowedAccounts.map((item:AccountInfo)=>(<Tile icon={item.icon} socialAccount={item.socialAccount}/>))}
     </View>
+   }
    </SafeAreaView>
   )
 }

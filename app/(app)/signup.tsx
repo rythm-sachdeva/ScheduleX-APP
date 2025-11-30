@@ -1,6 +1,6 @@
-import { useAuth } from "@/context/AuthContext";
 import { ISignUpRequest } from "@/context/entity/auth.entity";
 import { EyeIcon, EyeSlashIcon } from "@/global/Icons/EyeIcon";
+import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -18,7 +18,7 @@ export default function SignUp() {
    })
    const [showPassword , setShowPassword] = useState<boolean>(false)
    const [confirmPassword,setConfirmPassword] = useState<boolean>(false)
-   const {signUp} = useAuth();
+   const {signUp} = useAuthStore();
    const router = useRouter();
    
    
