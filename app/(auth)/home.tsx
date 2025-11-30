@@ -2,17 +2,19 @@ import Tile from '@/components/HomePage/Tile'
 import { AccountInfo, AllowedAccounts } from '@/global/constants/allowedAccounts'
 import { djangoUrls } from '@/global/Endpoints/django-endpoints'
 import { useAuthStore } from '@/store/authStore'
+import { useLinkedInStore } from '@/store/linkedInStore'
 import { useConfig } from '@/store/urlStore'
 import { getToken } from '@/utils/token'
+import * as Linking from 'expo-linking'
 import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-
 
 const home = () => {
    const {session} = useAuthStore();
    const [connectedAccounts,setConnectedAccounts] = useState<any>(null);
    const config = useConfig();
+   const {handleDeepLink} = useLinkedInStore();
    
 
   useEffect(()=>{
@@ -24,6 +26,14 @@ const home = () => {
    }}).then((val)=>{
       val.json().then((valu)=>  setConnectedAccounts(valu))        
    })
+   const subscription = Linking.addEventListener('url', (event) => {
+    handleDeepLink(event);
+   }
+   );
+   return () => {
+    subscription.remove();
+   };
+
   },[])
 
   return (

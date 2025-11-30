@@ -3,11 +3,12 @@ import { LinkedinConfig } from '@/global/constants/linkedin.config';
 import { useLinkedInStore } from '@/store/linkedInStore';
 import { useUrlStore } from '@/store/urlStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { makeRedirectUri, ResponseType, useAuthRequest } from 'expo-auth-session';
+import { ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -21,17 +22,11 @@ const BackendUri = useUrlStore((state) => state.backendUrl) + '/linkedin/connect
 
 const Tile = ({icon,socialAccount}:AccountInfo) => {
   const {exchangeCodeForToken} = useLinkedInStore()
-
-  const redirectUri = makeRedirectUri({
-    scheme: 'socialschedulerapp', 
-    path: 'redirect'
-  });
-  console.log('Redirect URI:', redirectUri);
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: ClientId,
       scopes: ['openid', 'profile', 'email', 'w_member_social'],
-      redirectUri,
+      redirectUri:"https://x17hwf7f-8000.inc1.devtunnels.ms/linkedin/callback/",
       responseType: ResponseType.Code,
     },
     DISCOVERY
