@@ -1,7 +1,6 @@
 import { AccountInfo } from '@/global/constants/allowedAccounts';
 import { LinkedinConfig } from '@/global/constants/linkedin.config';
 import { useLinkedInStore } from '@/store/linkedInStore';
-import { useUrlStore } from '@/store/urlStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
@@ -18,7 +17,6 @@ const DISCOVERY = {
 };
 
 const ClientId = LinkedinConfig.clientId;
-const BackendUri = useUrlStore((state) => state.backendUrl) + '/linkedin/connect';
 
 const Tile = ({icon,socialAccount}:AccountInfo) => {
   const {exchangeCodeForToken} = useLinkedInStore()

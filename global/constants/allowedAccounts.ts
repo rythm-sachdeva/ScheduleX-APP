@@ -3,7 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 export const AllowedAccounts:AccountInfo[] =[ 
     {
         socialAccount:"LinkedIn",
-        icon:'linkedin-square'
+        icon:'linkedin-square',
     },
     {
         socialAccount:'Facebook',
@@ -22,5 +22,5 @@ export const AllowedAccounts:AccountInfo[] =[
 
 export type AccountInfo ={
     socialAccount:string,
-    icon: keyof typeof FontAwesome.glyphMap
+    icon: keyof typeof FontAwesome.glyphMap,
 }
