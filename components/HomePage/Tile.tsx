@@ -1,47 +1,42 @@
 import { AccountInfo } from '@/global/constants/allowedAccounts';
 import { LinkedinConfig } from '@/global/constants/linkedin.config';
+import { useAuthStore } from '@/store/authStore';
 import { useLinkedInStore } from '@/store/linkedInStore';
+import { useConfig } from '@/store/urlStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 
+
 WebBrowser.maybeCompleteAuthSession();
 
-const DISCOVERY = {
-  authorizationEndpoint: LinkedinConfig.serviceConfiguration.authorizationEndpoint,
-  tokenEndpoint: LinkedinConfig.serviceConfiguration.tokenEndpoint,
-};
+
 
 const ClientId = LinkedinConfig.clientId;
 
 const Tile = ({icon,socialAccount}:AccountInfo) => {
   const {exchangeCodeForToken} = useLinkedInStore()
+  const {backendUrl} = useConfig();
+  const {session} = useAuthStore();
+  // console.log(session)
   const [request, response, promptAsync] = useAuthRequest(
     {
-      clientId: ClientId,
-      scopes: ['openid', 'profile', 'email', 'w_member_social'],
+      clientId: "frontend-app-1234",
+      scopes: [],
       redirectUri:"https://x17hwf7f-8000.inc1.devtunnels.ms/linkedin/callback/",
       responseType: ResponseType.Code,
+      extraParams:{
+        auth_token: session!
+      }
     },
-    DISCOVERY
-  );
-   useEffect(() => {
-    if (response?.type === 'success') {
-      const { code } = response.params;
-      console.log('Auth Code received:', code);
-      exchangeCodeForToken(code);
-    } else if (response?.type === 'error') {
-      Toast.show({
-        type: 'error',
-        text1: 'Authentication Error',
-        text2: 'Failed to authenticate with LinkedIn.',
-      })
+    {
+      authorizationEndpoint: backendUrl + 'linkedin/login/',
     }
-  }, [response]);
+  );
 
   return (
     <View style={styles.container} >
