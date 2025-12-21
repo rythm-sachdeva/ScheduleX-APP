@@ -16,6 +16,7 @@ interface LinkedinAuthState {
   isLoading: boolean;
   userToken: string | null;
   userData: UserData | null; 
+  linkedinConnected:boolean;
 
   // Actions
   exchangeCodeForToken: (authCode: string) => Promise<void>;
@@ -28,6 +29,7 @@ export const useLinkedInStore = create<LinkedinAuthState>((set, get) => ({
   isLoading: false,
   userToken: null,
   userData: null,
+  linkedinConnected:false,
 
   exchangeCodeForToken: async (authCode: string) => {
     set({ isLoading: true });
@@ -86,6 +88,7 @@ export const useLinkedInStore = create<LinkedinAuthState>((set, get) => ({
         picture: queryParams.pic as string,
       };
       get().setUserData(userData);
+      set({linkedinConnected:true});
     }
   },
 

@@ -22,6 +22,7 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
   const {exchangeCodeForToken} = useLinkedInStore()
   const {backendUrl} = useConfig();
   const {session} = useAuthStore();
+  const {linkedinConnected} = useLinkedInStore()
   // console.log(session)
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -43,7 +44,7 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
       <FontAwesome name={icon} size={40} color={"white"}/>
       <Text style={styles.text}>Connect Your {socialAccount}</Text>
       <TouchableOpacity onPress={()=> {
-        if (socialAccount.toLocaleLowerCase() === 'linkedin') {
+        if (socialAccount.toLocaleLowerCase() === 'linkedin' && !linkedinConnected) {
           promptAsync();
         }
         else{
@@ -53,9 +54,9 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
             text2: `Connection for ${socialAccount} is not implemented yet.`,
           })
         }
-      }}  className='flex-row  flex justify-center items-center ' style={styles.button} >
+      }}  className='flex-row  flex justify-center items-center ' style={(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedinConnected)?"":styles.button} >
           <Text style={styles.text2} className=' font-semibold'>
-            Connect
+           {(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedinConnected)? "Connected":"Connect"} 
         </Text>
       </TouchableOpacity>
     </View>
@@ -88,8 +89,14 @@ const styles = StyleSheet.create({
    borderRadius:4,
    backgroundColor:'#38bdf8'
   },
+  disabledbutton:{
+    gap:5,
+   padding:10,
+   borderRadius:4,
+   backgroundColor:'#9ca3af',
+  },
   text2:{
-    color:'#1e293b',
+    color:'white',
     fontWeight:'600'
   }
 });

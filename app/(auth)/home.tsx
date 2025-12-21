@@ -27,6 +27,7 @@ const home = () => {
       val.json().then((valu)=>  setConnectedAccounts(valu))        
    })
    const subscription = Linking.addEventListener('url', (event) => {
+    // console.log(event)
     handleDeepLink(event);
    }
    );

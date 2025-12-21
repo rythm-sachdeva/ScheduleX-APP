@@ -1,5 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
+
+
 export const AllowedAccounts:AccountInfo[] =[ 
     {
         socialAccount:"LinkedIn",
