@@ -6,7 +6,6 @@ import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 import { create } from 'zustand';
 import { useConfig } from "./urlStore";
-
 const router = useRouter();
 const backendUrl = useConfig().backendUrl;
 export const useAuthStore = create<IAuthContext>((set) => ({
@@ -113,5 +112,38 @@ export const useAuthStore = create<IAuthContext>((set) => ({
     } finally {
         set({ isLoading: false });
     }
+  },
+  getAccessToken : async ()=>{
+    getToken().then((tokenObj) => {
+          if (tokenObj.refreshToken) {
+            
+           const refreshToken = tokenObj.refreshToken;
+           if(!refreshToken){
+            router.replace('/(app)/signin');
+            return;
+           }
+           fetch("https://x17hwf7f-8000.inc1.devtunnels.ms/api/token/refresh/",{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ refresh: refreshToken }),
+           })
+            .then(response => response.json())
+            .then(data => {
+              if (data.access) {
+                set({ session: data.access });
+                return data.access;
+              }
+            }).catch((error) => {
+              Toast.show({
+                type: 'error',
+                text1: 'Session Error',
+                text2: 'Please sign in again.',
+              })
+              router.replace('/(app)/signin');
+            });
+          }
+        });
   }
 }));

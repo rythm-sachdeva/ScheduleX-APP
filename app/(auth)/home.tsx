@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const home = () => {
+const Home = () => {
    const {session} = useAuthStore();
    const [connectedAccounts,setConnectedAccounts] = useState<any>(null);
    const config = useConfig();
@@ -41,7 +41,7 @@ const home = () => {
   },[])
 
   return (
-   <SafeAreaView className='flex-1 flex-col bg-slate-900'>
+   <SafeAreaView className='flex-1 flex-col bg-background-dark'>
     {/* Header  */}
     <View className='flex-row justify-between items-center pt-6 px-4 py-3 '>
       <Text className='text-white text-2xl font-semibold '>
@@ -60,11 +60,11 @@ const home = () => {
     {/* Main Content  */}
    { 
     <View className='w-full flex-1 gap-10 px-3 pt-6'>
-       {AllowedAccounts.map((item:AccountInfo)=>(<Tile icon={item.icon} socialAccount={item.socialAccount}/>))}
+       {AllowedAccounts.map((item:AccountInfo)=>(<Tile key={item.socialAccount} icon={item.icon} socialAccount={item.socialAccount}/>))}
     </View>
    }
    </SafeAreaView>
   )
 }
 
-export default home
+export default Home

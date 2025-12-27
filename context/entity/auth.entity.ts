@@ -5,6 +5,7 @@ export interface IAuthContext{
     session: string | null;
     isLoading: boolean;
     setSession: (token:string | null)=> void;
+    getAccessToken: ()=> Promise<string | null | undefined | void>;
 }
 export interface ISignUpRequest{
     username:string;

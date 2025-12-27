@@ -1,8 +1,8 @@
-import Ionicons from '@expo/vector-icons/Ionicons'
-import { Tabs } from 'expo-router'
-import React from 'react'
-import { Platform, Text, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Tabs } from 'expo-router';
+import React from 'react';
+import { Platform, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BAR_HEIGHT = 65;
 const FAB_SIZE = 64;
@@ -46,8 +46,9 @@ const _layout = () => {
           right: 0,
           height: tabBarHeight,
           paddingTop: 12,
-          backgroundColor: '#020617', 
-          borderTopWidth: 0,
+          backgroundColor: '#101c22', 
+          borderTopWidth: 1,
+          borderTopColor: '#1f2a33',
           elevation: 0,
         }}}>
     <Tabs.Screen name='home' options={{title:'Home',headerShown:false,

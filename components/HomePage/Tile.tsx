@@ -4,13 +4,13 @@ import { useAccountConfigStore } from '@/store/accountStore';
 import { useAuthStore } from '@/store/authStore';
 import { useLinkedInStore } from '@/store/linkedInStore';
 import { useConfig } from '@/store/urlStore';
+import { Feather } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ResponseType, useAuthRequest } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
-
 
 
 WebBrowser.maybeCompleteAuthSession();
@@ -56,10 +56,10 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
             text2: `Connection for ${socialAccount} is not implemented yet.`,
           })
         }
-      }}  className='flex-row  flex justify-center items-center ' style={(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()))?"":styles.button} >
-          <Text style={styles.text2} className=' font-semibold'>
+      }}  className={`flex-row flex justify-center items-center  `} style={(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()))?styles.disabledbutton:styles.button} >
+         { !linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()) ? <Text style={styles.text2} className=' font-semibold'>
            {(linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()))? "Connected":"Connect"} 
-        </Text>
+        </Text>:<Feather name="check-circle" size={24} color="#7ED321" />}
       </TouchableOpacity>
     </View>
   )
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height:80,
-    backgroundColor: '#1e293b', 
+    backgroundColor: '#192730', 
     borderRadius: 20,              
     justifyContent: 'space-evenly',            
     borderColor: '#bfdbfe',
@@ -88,14 +88,15 @@ const styles = StyleSheet.create({
   button:{
    gap:5,
    padding:10,
-   borderRadius:4,
-   backgroundColor:'#38bdf8'
+   borderRadius:100,
+   backgroundColor:'#4A90E2'
   },
   disabledbutton:{
     gap:5,
    padding:10,
-   borderRadius:4,
-   backgroundColor:'#16a34a',
+   borderRadius:100,
+    opacity:0.6,
+    // backgroundColor:'#7ED321'
   },
   text2:{
     color:'white',
