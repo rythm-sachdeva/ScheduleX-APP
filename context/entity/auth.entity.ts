@@ -4,6 +4,7 @@ export interface IAuthContext{
     signUp: (data:ISignUpRequest)=> Promise<void>;
     session: string | null;
     isLoading: boolean;
+    setSession: (token:string | null)=> void;
 }
 export interface ISignUpRequest{
     username:string;

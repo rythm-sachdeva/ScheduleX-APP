@@ -1,6 +1,7 @@
 import Tile from '@/components/HomePage/Tile'
 import { AccountInfo, AllowedAccounts } from '@/global/constants/allowedAccounts'
 import { djangoUrls } from '@/global/Endpoints/django-endpoints'
+import { useAccountConfigStore } from '@/store/accountStore'
 import { useAuthStore } from '@/store/authStore'
 import { useLinkedInStore } from '@/store/linkedInStore'
 import { useConfig } from '@/store/urlStore'
@@ -15,8 +16,8 @@ const home = () => {
    const [connectedAccounts,setConnectedAccounts] = useState<any>(null);
    const config = useConfig();
    const {handleDeepLink} = useLinkedInStore();
+   const {setLinkedAccounts} = useAccountConfigStore()
    
-
   useEffect(()=>{
    let token; 
    getToken().then((val)=> token = val)
@@ -24,7 +25,9 @@ const home = () => {
    fetch(config.backendUrl + String(djangoUrls.connectedAccounts),{headers:{
     Authorization: `Bearer ${session}`
    }}).then((val)=>{
-      val.json().then((valu)=>  setConnectedAccounts(valu))        
+      val.json().then((valu)=>  {setConnectedAccounts(valu)
+        setLinkedAccounts(valu)
+      })        
    })
    const subscription = Linking.addEventListener('url', (event) => {
     // console.log(event)

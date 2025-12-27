@@ -1,5 +1,6 @@
 import { AccountInfo } from '@/global/constants/allowedAccounts';
 import { LinkedinConfig } from '@/global/constants/linkedin.config';
+import { useAccountConfigStore } from '@/store/accountStore';
 import { useAuthStore } from '@/store/authStore';
 import { useLinkedInStore } from '@/store/linkedInStore';
 import { useConfig } from '@/store/urlStore';
@@ -23,6 +24,7 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
   const {backendUrl} = useConfig();
   const {session} = useAuthStore();
   const {linkedinConnected} = useLinkedInStore()
+  const {linkedAccounts} = useAccountConfigStore();
   // console.log(session)
   const [request, response, promptAsync] = useAuthRequest(
     {
@@ -54,9 +56,9 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
             text2: `Connection for ${socialAccount} is not implemented yet.`,
           })
         }
-      }}  className='flex-row  flex justify-center items-center ' style={(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedinConnected)?"":styles.button} >
+      }}  className='flex-row  flex justify-center items-center ' style={(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()))?"":styles.button} >
           <Text style={styles.text2} className=' font-semibold'>
-           {(socialAccount.toLocaleLowerCase() === 'linkedin' && linkedinConnected)? "Connected":"Connect"} 
+           {(linkedAccounts.find((item)=>item.provider === socialAccount.toLowerCase()))? "Connected":"Connect"} 
         </Text>
       </TouchableOpacity>
     </View>
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
     gap:5,
    padding:10,
    borderRadius:4,
-   backgroundColor:'#9ca3af',
+   backgroundColor:'#16a34a',
   },
   text2:{
     color:'white',

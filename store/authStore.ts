@@ -12,6 +12,8 @@ const backendUrl = useConfig().backendUrl;
 export const useAuthStore = create<IAuthContext>((set) => ({
   session: null,
   isLoading: false,
+  setSession: (token: string | null) => set({ session: token }),
+
 
   signIn: async (email, password) => {
     const data = { email, password };
@@ -104,7 +106,7 @@ export const useAuthStore = create<IAuthContext>((set) => ({
     try {
       const token = await getToken();
       if (token) {
-        set({ session: token });
+        set({ session: token.accessToken });
       }
     } catch (error) {
         console.error("Failed to load session", error);

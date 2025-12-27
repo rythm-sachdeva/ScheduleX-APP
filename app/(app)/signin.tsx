@@ -86,16 +86,8 @@ const router = useRouter();
             <Text className="text-gray-400">Terms of Service</Text> and{' '}
             <Text className="text-gray-400">Privacy Policy</Text>.
           </Text>
-
-
       </View>
-
-
-      
-
     </KeyboardAwareScrollView>
-
-
    </SafeAreaView>
   )
 }

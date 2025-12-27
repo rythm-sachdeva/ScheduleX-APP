@@ -11,10 +11,11 @@ export const setToken = async(accessToken:string,refreshToken:string)=>{
 
 }
 
-export const getToken = async () : Promise<string | null | undefined>    =>{
+export const getToken = async () : Promise<{accessToken: string | null | undefined, refreshToken: string | null | undefined}>=>{
     try {
         const accessToken = await SecureStore.getItemAsync('accessToken')
-        return accessToken;
+        const refreshToken = await SecureStore.getItemAsync('refreshToken')
+        return {accessToken, refreshToken};
     } catch (error) {
         throw new ScheduleError("Unable to getToken","getToken")
     }

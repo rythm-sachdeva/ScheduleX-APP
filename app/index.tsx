@@ -1,11 +1,42 @@
+import { useAuthStore } from '@/store/authStore';
+import { getToken } from '@/utils/token';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 const index = () => {
   const router = useRouter();
+  const {setSession} = useAuthStore();
+  useEffect(() => {
+    getToken().then((tokenObj) => {
+      if (tokenObj.refreshToken) {
+        
+       const refreshToken = tokenObj.refreshToken;
+       if(!refreshToken){
+        router.replace('/(app)/signin');
+        return;
+       }
+       fetch("https://x17hwf7f-8000.inc1.devtunnels.ms/api/token/refresh/",{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+       })
+        .then(response => response.json())
+        .then(data => {
+          if (data.access) {
+            setSession(data.access);
+            router.replace('/(auth)/home');
+          }
+        }).catch((error) => {
+          router.replace('/(app)/signin');
+        });
+      }
+    });
+  },[]);
   const onGetStarted = (e:any)=>{
     router.push('/signup')
   }
@@ -17,7 +48,7 @@ const index = () => {
     <SafeAreaView className='flex-1 bg-slate-900 '>
       <StatusBar barStyle='light-content'/>
       <View className='flex-1 justify-between p-6'>
-        {/* Header Section */}
+        {/* Header Section */} 
         <View>
           <Text className='font-bold text-2xl text-white text-center'>
             ScheduleX
