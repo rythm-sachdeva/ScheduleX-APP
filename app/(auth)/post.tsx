@@ -1,5 +1,7 @@
+import { DateComponent } from '@/components/generic/DateComponent';
 import { useAccountConfigStore } from '@/store/accountStore';
 import { useAuthStore } from '@/store/authStore';
+import { useDateStore } from '@/store/dateStore';
 import { useUrlStore } from '@/store/urlStore';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import React from 'react';
@@ -14,6 +16,7 @@ const Post = () => {
   const [caption, setCaption] = React.useState('');
   const {backendUrl} = useUrlStore()
   const {getAccessToken,session} = useAuthStore();
+  const {openDatePicker,setOpenDatePicker}= useDateStore();
   const handleClick = async () =>{
     try {
       const accessToken = await getAccessToken();
@@ -63,7 +66,26 @@ const Post = () => {
             
             {/* <Text className='font-semibold mt-6 p-4 bg-slate-700 text-lg rounded-2xl text-white'>Upload Media</Text> */}
         </View>
-        <View className='mt-5 gap-1 flex justify-center items-center p-5 rounded-xl'>
+       
+        {/* Caption  */}
+        <View className='flex flex-row mt-3 -mb-4 justify-between'>
+          <Text className='text-white text-lg mb-2'>Caption</Text>
+          <Text className='text-white text-lg mb-2'>0/2200</Text>
+          </View>
+
+
+        <View className='form-input mt-5 flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-slate-300 dark:border-[#325567] bg-white dark:bg-[#192b33] focus:border-primary dark:focus:border-primary min-h-20 p-[15px]'>
+          <TextInput 
+            className='text-white text-xl min-h-[400px] overflow-scroll' 
+            placeholder='Write Caption'  
+            placeholderTextColor='#94a3b8'
+            value={caption} 
+            onChangeText={setCaption}
+            multiline={true}
+            textAlignVertical='top'
+          />
+</View>
+ <View className='mt-5 gap-1 flex justify-center items-center p-5 rounded-xl'>
           <Text className='text-text-dark text-lg font-semibold mb-2'>
             Connected Accounts
           </Text>
@@ -89,14 +111,9 @@ const Post = () => {
 />
          }
         </View>
-        <View className='flex flex-row mt-3 -mb-4 justify-between'>
-          <Text className='text-white text-lg mb-2'>Caption</Text>
-          <Text className='text-white text-lg mb-2'>0/2200</Text>
-          </View>
-        <View className='form-input mt-5 flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-slate-300 dark:border-[#325567] bg-white dark:bg-[#192b33] focus:border-primary dark:focus:border-primary min-h-15 placeholder:text-slate-400 dark:placeholder:text-[#92b7c9] p-[15px] text-base font-normal leading-normal'>
-          
-         <TextInput className='text-white text-xl min-h-[200px] overflow-scroll placeholder:text-slate-400' placeholder='Write Caption'  value={caption} onChangeText={setCaption}></TextInput>
-        </View>
+      
+          <DateComponent/>
+     
         <TouchableOpacity className='bg-primary rounded-full p-4 items-center justify-center my-10' onPress={handleClick}>
             <Text className='text-white text-lg font-semibold'>Schedule Post</Text>
           </TouchableOpacity>
