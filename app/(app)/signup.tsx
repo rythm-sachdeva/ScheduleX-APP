@@ -31,7 +31,7 @@ export default function SignUp() {
         keyboardShouldPersistTaps='handled'
         showsVerticalScrollIndicator={false}
         enableOnAndroid={true}
-        extraScrollHeight={20}
+        extraScrollHeight={20}  
       >
       <View className="flex-1 px-6 pt-12 pb-8">
        {/* Header */}

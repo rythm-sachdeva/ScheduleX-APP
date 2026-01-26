@@ -1,4 +1,5 @@
 import { DateComponent } from '@/components/generic/DateComponent';
+import { ScheduleStatus } from '@/global/constants/ScheduleConsts';
 import { useAccountConfigStore } from '@/store/accountStore';
 import { useAuthStore } from '@/store/authStore';
 import { useDateStore } from '@/store/dateStore';
@@ -16,7 +17,7 @@ const Post = () => {
   const [caption, setCaption] = React.useState('');
   const {backendUrl} = useUrlStore()
   const {getAccessToken,session} = useAuthStore();
-  const {openDatePicker,setOpenDatePicker}= useDateStore();
+  const {openDatePicker,setOpenDatePicker,date}= useDateStore();
   const handleClick = async () =>{
     try {
       const accessToken = await getAccessToken();
@@ -26,7 +27,11 @@ const Post = () => {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${accessToken ?? session}`
         },
-        body: JSON.stringify({ content: caption})
+        body: JSON.stringify({ content: caption
+        , scheduled_time: date ? date.toISOString() : new Date().toISOString(),
+        provider:'linkedin',
+        status:ScheduleStatus.SCHEDULED 
+        })
       });
       if(response.ok){
         Toast.show({
