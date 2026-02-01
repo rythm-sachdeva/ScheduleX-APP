@@ -1,3 +1,4 @@
+import GetStartedCard from '@/components/HomePage/GetStartedCard'
 import Tile from '@/components/HomePage/Tile'
 import { AccountInfo, AllowedAccounts } from '@/global/constants/allowedAccounts'
 import { djangoUrls } from '@/global/Endpoints/django-endpoints'
@@ -6,10 +7,10 @@ import { useAuthStore } from '@/store/authStore'
 import { useLinkedInStore } from '@/store/linkedInStore'
 import { useConfig } from '@/store/urlStore'
 import { getToken } from '@/utils/token'
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
+import Ionicons from '@expo/vector-icons/Ionicons'
 import * as Linking from 'expo-linking'
 import React, { useEffect, useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
@@ -45,24 +46,31 @@ const Home = () => {
   return (
    <SafeAreaView className='flex-1 flex-col bg-background-dark'>
     {/* Header  */}
-    <View className='flex-row justify-between items-center pt-6 px-4 py-3 '>
-      <TouchableOpacity>
-        <FontAwesome6 name="calendar-week" size={24} color="white" />
-      </TouchableOpacity>
-      <Text className='text-white pl-2 text-3xl font-semibold'>
-       Post Schedule
+    <View className='border-b flex-row justify-between items-center  border-gray-700 py-4 px-6'>
+      <View className='flex'>
+        <Text className='text-white/70 text-md'>
+        Welcome to ScheduleX
       </Text>
-
-      <TouchableOpacity className='px-3 py-1 rounded-full flex justify-center items-center'>
-       <FontAwesome6 name="add" size={24} color="white" />
-      </TouchableOpacity>
+      <Text className='text-white font-semibold text-2xl'>
+       Get Started, 
+      </Text>
+      </View>
+      <View className='h-11 w-11 flex justify-center items-center rounded-lg border border-gray-700 bg-background-secondary-dark'>
+       <Ionicons name="notifications" size={24} color="white" />
+      </View>
     </View>
     {/* Main Content  */}
-   { 
-    <View className='w-full flex-1 gap-10 px-3 pt-6'>
-       {AllowedAccounts.map((item:AccountInfo)=>(<Tile key={item.socialAccount} icon={item.icon} socialAccount={item.socialAccount}/>))}
-    </View>
-   }
+    <ScrollView contentContainerStyle={{paddingBottom:100}} className='flex-1 pt-6' showsVerticalScrollIndicator={false}>
+        <GetStartedCard/>
+        {/* Connected Accounts Section  */}
+        <View className='px-4'>
+           <Text className='text-white font-semibold text-2xl mb-4 mt-6'>Quick Connect</Text>
+        </View>
+        <View className='w-full flex-1 p-2 gap-10 px-3 pt-6'>
+           {AllowedAccounts.map((item:AccountInfo)=>(<Tile key={item.socialAccount} icon={item.icon} socialAccount={item.socialAccount}/>))}
+        </View>
+      </ScrollView>
+   
    </SafeAreaView>
   )
 }

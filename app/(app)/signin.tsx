@@ -7,7 +7,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const profile = () => {
+const signin = () => {
   const [formData,setFormData] = useState<ISignInRequest>({email:"",password:""});
 const [showPassword , setShowPassword] = useState<boolean>(false)
 const {signIn} = useAuthStore();
@@ -92,6 +92,6 @@ const router = useRouter();
   )
 }
 
-export default profile
+export default signin
 
 const styles = StyleSheet.create({})

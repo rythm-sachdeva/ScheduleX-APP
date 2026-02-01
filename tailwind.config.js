@@ -14,7 +14,9 @@ module.exports = {
             "text-dark": "#E0E0E0",
             "card-light": "#FFFFFF",
             "card-dark": "#192730",
-            "success": "#7ED321"
+            "success": "#7ED321",
+            "background-secondary-dark": "#192b33",
+            "surface-dark": "#192b33"
             },
     },
   },
