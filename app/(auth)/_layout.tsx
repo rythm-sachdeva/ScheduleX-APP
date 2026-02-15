@@ -37,7 +37,6 @@ const _layout = () => {
     height:'100%',
     justifyContent:'center',
     alignItems:'center'
-
    },
    tabBarStyle:{
           position: 'absolute',

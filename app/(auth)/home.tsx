@@ -8,6 +8,7 @@ import { useAuthStore } from '@/store/authStore'
 import { useLinkedInStore } from '@/store/linkedInStore'
 import { SchduledPost, usePostStore } from '@/store/postStore'
 import { useConfig } from '@/store/urlStore'
+import { useUserStore } from '@/store/userStore'
 import { getToken } from '@/utils/token'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import * as Linking from 'expo-linking'
@@ -23,6 +24,7 @@ const Home = () => {
    const {handleDeepLink} = useLinkedInStore();
    const {setLinkedAccounts} = useAccountConfigStore()
    const {scheduledPosts,fetchScheduledPosts} = usePostStore()
+   const {userDetails,fetchUserDetails} = useUserStore();
    
   useEffect(()=>{
    let token; 
@@ -36,6 +38,10 @@ const Home = () => {
       })        
    })
    fetchScheduledPosts(session,config.backendUrl + String(djangoUrls.scheduledPosts)).then()
+   fetchUserDetails(session,config.backendUrl + String(djangoUrls.userDetails)).then()
+
+
+
 
    const subscription = Linking.addEventListener('url', (event) => {
     // console.log(event)
@@ -57,8 +63,8 @@ const Home = () => {
         Welcome to ScheduleX
       </Text>
       {
-        connectedAccounts == null && <Text className='text-white font-semibold text-2xl'>
-       Get Started, 
+        userDetails &&  <Text className='text-white font-semibold text-2xl'>
+       {userDetails.username} 
       </Text>
       
       }</View>
