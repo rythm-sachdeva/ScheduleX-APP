@@ -1,5 +1,7 @@
+import { ConnectButton } from '@/components/Crypto/ConnectedButton';
 import Tile from '@/components/HomePage/Tile';
 import { AccountInfo, AllowedAccounts } from '@/global/constants/allowedAccounts';
+import { useWallet } from '@/hooks/useWallet';
 import { useUserStore } from '@/store/userStore';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Profile = () => {
    const { userDetails } = useUserStore();
+   
+   const wallet = useWallet();
    return (
       <SafeAreaView className='min-h-screen pt-8 flex gap-8 bg-background-dark'>
          {/* Main Content */}
@@ -63,6 +67,13 @@ const Profile = () => {
             </View>
          <View className=''>
 
+         <ConnectButton
+          connected={wallet.connected}
+          connecting={wallet.connecting!=null? wallet.connecting:false}
+          publicKey={wallet.publicKey?.toBase58() ?? null}
+          onConnect={wallet.connect}
+          onDisconnect={wallet.disconnect}
+        />         
 
          </View>
 
