@@ -4,7 +4,7 @@ import { create } from 'zustand';
 
 
 export const useUrlStore = create<IUrlContext>((set) => ({
-  backendUrl: 'https://x17hwf7f-8000.inc1.devtunnels.ms/', 
+  backendUrl: 'https://x17hwf7f-8001.inc1.devtunnels.ms/', 
 }));
 
 

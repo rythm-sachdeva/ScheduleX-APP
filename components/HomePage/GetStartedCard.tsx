@@ -1,19 +1,22 @@
-import { AntDesign } from '@expo/vector-icons';
+import { useWallet } from '@/hooks/useWallet';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
-    ImageBackground,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View
 } from 'react-native';
+import { ConnectButton } from '../Crypto/ConnectedButton';
 
 const GetStartedCard = () => {
-  const handleLinkAccount = () => {
-    console.log('Link account pressed');
-    // Add your navigation or linking logic here
-  };
+ const wallet = useWallet();
+ const router = useRouter();
+ const handleClick = ()=>{
+  router.navigate('/(auth)/profile');
+ }
+  
 
   return (
     <View style={styles.container} >
@@ -51,14 +54,16 @@ const GetStartedCard = () => {
           </View>
 
           {/* Button */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLinkAccount}
-            activeOpacity={0.9}
-          >
-            <AntDesign name="link" size={24} style={styles.buttonIcon} color="#ffffff" />
-            <Text style={styles.buttonText}>Link Your First Account</Text>
-          </TouchableOpacity>
+         
+                 
+                    
+    <ConnectButton
+      connected={wallet.connected}
+      connecting={wallet.connecting ?? false}
+      publicKey={wallet.publicKey?.toBase58() ?? null}
+      onConnect={wallet.connect}
+      onDisconnect={wallet.disconnect}
+    />
         </View>
       </View>
     </View>
@@ -68,6 +73,15 @@ const GetStartedCard = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+  },
+   startedbutton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent:'center',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 20,
+    gap: 8,
   },
   card: {
     backgroundColor: '#192b33',

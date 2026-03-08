@@ -19,7 +19,7 @@ const index = () => {
         router.replace('/(app)/signin');
         return;
        }
-       fetch("https://x17hwf7f-8000.inc1.devtunnels.ms/api/token/refresh/",{
+       fetch("https://x17hwf7f-8001.inc1.devtunnels.ms/api/token/refresh/",{
         method: "POST",
         headers: {
           "Content-Type": "application/json",

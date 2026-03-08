@@ -1,0 +1,240 @@
+{
+  "address": "FiNgtqe65wQWCmMT82r4FkRLqZgi2PPAQxvfVwDdoGim",
+  "metadata": {
+    "name": "social_vault",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "delete_token",
+      "discriminator": [
+        208,
+        193,
+        211,
+        235,
+        81,
+        190,
+        115,
+        68
+      ],
+      "accounts": [
+        {
+          "name": "token_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "arg",
+                "path": "platform"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "token_vault"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "_platform",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "store_token",
+      "discriminator": [
+        148,
+        199,
+        69,
+        249,
+        204,
+        181,
+        38,
+        20
+      ],
+      "accounts": [
+        {
+          "name": "token_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "owner"
+              },
+              {
+                "kind": "arg",
+                "path": "platform"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "platform",
+          "type": "string"
+        },
+        {
+          "name": "token",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "TokenVault",
+      "discriminator": [
+        121,
+        7,
+        84,
+        254,
+        151,
+        228,
+        43,
+        144
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "TokenStored",
+      "discriminator": [
+        29,
+        240,
+        214,
+        148,
+        114,
+        176,
+        31,
+        142
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidPlatform",
+      "msg": "The provided platform is invalid."
+    },
+    {
+      "code": 6001,
+      "name": "InvalidToken",
+      "msg": "The provided token is invalid."
+    },
+    {
+      "code": 6002,
+      "name": "PlatformTooLong",
+      "msg": "The platform name is too long"
+    },
+    {
+      "code": 6003,
+      "name": "TokenTooLong",
+      "msg": "Token too long"
+    }
+  ],
+  "types": [
+    {
+      "name": "TokenStored",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "platform",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenVault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "pubkey"
+          },
+          {
+            "name": "platform",
+            "type": "string"
+          },
+          {
+            "name": "encrypted_token",
+            "type": "string"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

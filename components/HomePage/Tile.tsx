@@ -30,7 +30,7 @@ const Tile = ({icon,socialAccount}:AccountInfo) => {
     {
       clientId: "frontend-app-1234",
       scopes: [],
-      redirectUri:"https://x17hwf7f-8000.inc1.devtunnels.ms/linkedin/callback/",
+      redirectUri:"https://x17hwf7f-8001.inc1.devtunnels.ms/linkedin/callback/",
       responseType: ResponseType.Code,
       extraParams:{
         auth_token: session!

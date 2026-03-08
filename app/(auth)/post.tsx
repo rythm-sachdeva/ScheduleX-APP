@@ -18,6 +18,7 @@ const Post = () => {
   const {backendUrl} = useUrlStore()
   const {getAccessToken,session} = useAuthStore();
   const {openDatePicker,setOpenDatePicker,date}= useDateStore();
+
   const handleClick = async () =>{
     try {
       const accessToken = await getAccessToken();
@@ -47,100 +48,221 @@ const Post = () => {
       })
     }
   }
+
   return (
-    <SafeAreaView className='flex-1 pt-9 gap-2 p-4 bg-background-dark'>
-      <ScrollView contentContainerStyle={{flexGrow:1,paddingBottom:50,}} showsVerticalScrollIndicator={false}>
-      <KeyboardAwareScrollView 
-        contentContainerStyle={{ flexGrow: 1 }} 
-        keyboardShouldPersistTaps='handled'
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-        enableOnAndroid={true}
-        extraScrollHeight={20}
       >
-        <View>
-         <View className='flex justify-center items-center'>
-           <Text className='text-white text-3xl mb-6 font-semibold'>
-            Create Post
-          </Text>
-         </View>
-        </View>
-        <View className='flex ' style={styles.uploadBox}>
-          <Feather name="upload" className='mb-3 text-primary' size={30} color="#4A90E2" /> 
-          <Text className='text-white text-lg font-semibold'>Tap to add Photos Or Videos</Text>     
-          <Text className='text-slate-600 text-sm'>Upload media for your posts</Text>   
-            
-            {/* <Text className='font-semibold mt-6 p-4 bg-slate-700 text-lg rounded-2xl text-white'>Upload Media</Text> */}
-        </View>
-       
-        {/* Caption  */}
-        <View className='flex flex-row mt-3 -mb-4 justify-between'>
-          <Text className='text-white text-lg mb-2'>Caption</Text>
-          <Text className='text-white text-lg mb-2'>0/2200</Text>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.keyboardScrollContent}
+          keyboardShouldPersistTaps='handled'
+          showsVerticalScrollIndicator={false}
+          enableOnAndroid={true}
+          extraScrollHeight={20}
+        >
+          {/* Title */}
+          <View style={styles.titleWrapper}>
+            <Text style={styles.titleText}>Create Post</Text>
           </View>
 
+          {/* Upload Box */}
+          <View style={styles.uploadBox}>
+            <Feather name="upload" size={30} color="#4A90E2" style={styles.uploadIcon} />
+            <Text style={styles.uploadTitle}>Tap to add Photos Or Videos</Text>
+            <Text style={styles.uploadSubtitle}>Upload media for your posts</Text>
+          </View>
 
-        <View className='form-input mt-5 flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-slate-800 dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary border border-slate-300 dark:border-[#325567] bg-white dark:bg-[#192b33] focus:border-primary dark:focus:border-primary min-h-20 p-[15px]'>
-          <TextInput 
-            className='text-white text-xl min-h-[400px] overflow-scroll' 
-            placeholder='Write Caption'  
-            placeholderTextColor='#94a3b8'
-            value={caption} 
-            onChangeText={setCaption}
-            multiline={true}
-            textAlignVertical='top'
-          />
-</View>
- <View className='mt-5 gap-1 flex justify-center items-center p-5 rounded-xl'>
-          <Text className='text-text-dark text-lg font-semibold mb-2'>
-            Connected Accounts
-          </Text>
-         {
-          <FlatList
-  data={linkedAccounts}
-  horizontal
-  showsHorizontalScrollIndicator={false}
-  keyExtractor={(item, index) => index.toString()}
-  contentContainerStyle={{ paddingRight: 0 }} 
-  renderItem={({ item: account, index }) => (
-    <TouchableOpacity 
-      className='flex-row justify-between gap-4 items-center w-30 mr-4 p-4 bg-slate-800 rounded-lg'
-      onPress={() => {}}
-    >
-      //@ts-ignore
-      <FontAwesome name={account.provider} size={20} color={"#34D399"}/>
-      <Text className='text-white font-semibold text-lg'>
-        {account.provider.charAt(0).toUpperCase() + account.provider.slice(1)}
-      </Text>
-    </TouchableOpacity>
-  )}
-/>
-         }
-        </View>
-      
-          <DateComponent/>
-     
-        <TouchableOpacity className='bg-primary rounded-full p-4 items-center justify-center my-10' onPress={handleClick}>
-            <Text className='text-white text-lg font-semibold'>Schedule Post</Text>
+          {/* Caption Header Row */}
+          <View style={styles.captionHeader}>
+            <Text style={styles.captionLabel}>Caption</Text>
+            <Text style={styles.captionCounter}>0/2200</Text>
+          </View>
+
+          {/* Caption Input */}
+          <View style={styles.textInputContainer}>
+            <TextInput
+              style={styles.textInput}
+              placeholder='Write Caption'
+              placeholderTextColor='#94a3b8'
+              value={caption}
+              onChangeText={setCaption}
+              multiline={true}
+              textAlignVertical='top'
+            />
+          </View>
+
+          {/* Connected Accounts */}
+          <View style={styles.accountsContainer}>
+            <Text style={styles.accountsTitle}>Connected Accounts</Text>
+            <FlatList
+              data={linkedAccounts}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item, index) => index.toString()}
+              contentContainerStyle={styles.accountsList}
+              renderItem={({ item: account }) => (
+                <TouchableOpacity
+                  style={styles.accountItem}
+                  onPress={() => {}}
+                >
+                  {/* @ts-ignore */}
+                  <FontAwesome name={account.provider} size={20} color={"#34D399"} />
+                  <Text style={styles.accountName}>
+                    {account.provider.charAt(0).toUpperCase() + account.provider.slice(1)}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+          <DateComponent />
+          {/* Schedule Button */}
+          <TouchableOpacity style={styles.scheduleButton} onPress={handleClick}>
+            <Text style={styles.scheduleButtonText}>Schedule Post</Text>
           </TouchableOpacity>
-      </KeyboardAwareScrollView>
+
+        </KeyboardAwareScrollView>
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  uploadBox: {
-    padding: 50,
-    height: "30%",
-    borderRadius: 10,
-    borderWidth: 1, 
-    borderColor: 'white',
+  // Layout
+  safeArea: {
+    flex: 1,
+    paddingTop: 36,       
+    gap: 8,               
+    padding: 16,          
+    backgroundColor: '#101c22', 
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 50,
+  },
+  keyboardScrollContent: {
+    flexGrow: 1,
+  },
+
+  // Title
+  titleWrapper: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor:'#334155',
-    borderStyle:'dashed'
-  }
-})
+  },
+  titleText: {
+    color: '#ffffff',
+    fontSize: 30,         
+    marginBottom: 24,     
+    fontWeight: '600',    
+  },
 
+  // Upload Box
+  uploadBox: {
+    padding: 50,
+    height: '30%',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderStyle: 'dashed',
+  },
+  uploadIcon: {
+    marginBottom: 12,     
+  },
+  uploadTitle: {
+    color: '#ffffff',
+    fontSize: 18,         
+    fontWeight: '600',    
+  },
+  uploadSubtitle: {
+    color: '#475569',     
+    fontSize: 14,         
+  },
 
-export default Post
+  // Caption row
+  captionHeader: {
+    flexDirection: 'row', 
+    marginTop: 12,        
+    marginBottom: -16,    
+    justifyContent: 'space-between',
+  },
+  captionLabel: {
+    color: '#ffffff',
+    fontSize: 18,         
+    marginBottom: 8,      
+  },
+  captionCounter: {
+    color: '#ffffff',
+    fontSize: 18,         
+    marginBottom: 8,      
+  },
+
+  // TextInput container
+  textInputContainer: {
+    marginTop: 20,        
+    flex: 1,
+    borderRadius: 8,      
+    borderWidth: 1,
+    borderColor: '#325567',   
+    backgroundColor: '#192b33', 
+    minHeight: 80,        
+    padding: 15,          
+  },
+  textInput: {
+    color: '#ffffff',
+    fontSize: 20,         
+    minHeight: 400,       
+  },
+
+  // Connected Accounts
+  accountsContainer: {
+    marginTop: 20,        
+    gap: 4,               
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,          
+    borderRadius: 12,     
+  },
+  accountsTitle: {
+    color: '#E0E0E0',     
+    fontSize: 18,         
+    fontWeight: '600',    
+    marginBottom: 8,      
+  },
+  accountsList: {
+    paddingRight: 0,
+  },
+  accountItem: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    gap: 16,              
+    alignItems: 'center',
+    width: 120,           
+    marginRight: 16,      
+    padding: 16,          
+    backgroundColor: '#1e293b', 
+    borderRadius: 8,      
+  },
+  accountName: {
+    color: '#ffffff',
+    fontWeight: '600',    
+    fontSize: 18,         
+  },
+  scheduleButton: {
+    backgroundColor: '#4A90E2', 
+    borderRadius: 9999,   
+    padding: 16,          
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 40,   
+  },
+  scheduleButtonText: {
+    color: '#ffffff',
+    fontSize: 18,         
+    fontWeight: '600',   
+  },
+});
+
+export default Post;

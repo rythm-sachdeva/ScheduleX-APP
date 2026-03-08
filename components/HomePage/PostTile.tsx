@@ -45,6 +45,7 @@ const PostTile = ({post}: {post: SchduledPost}) => {
         <Text style={styles.timestamp}>
           {new Date(post.scheduled_time).toLocaleDateString()}
         </Text>
+        {/*@ts-ignore*/}
         <FontAwesome name={post.social_account_provider} size={20} color={"#34D399"}/>
       </View>
       
